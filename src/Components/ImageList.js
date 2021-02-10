@@ -1,6 +1,5 @@
 import React from 'react'
 import ImageItem from './ImageItem.js'
-import images from './Data.js'
 
 export default class ImageList extends React.Component {
     render() {
