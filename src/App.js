@@ -1,20 +1,18 @@
 import React from 'react'
 import './App.css';
-import ImageList from './ImageList.js'
+import ImageList from './Components/ImageList.js'
 import images from './Data.js'
-import Header from './Header.js'
+import Header from './Components/Header.js'
+import Dropdown from './Components/Dropdown.js'
 
 export default class App extends React.Component {
 
   state = {
-    title: '',
-    image: '',
-    description: '',
     keyword: '',
     horns: '',
   }
 
-  handleTitleChange = (e) => {
+  handleKeywordChange = (e) => {
     e.preventDefault()
 
     this.setState({
@@ -22,39 +20,59 @@ export default class App extends React.Component {
     })
   }
 
+  ////handler for horns
+  handleHornsChange = (e) => {
+    e.preventDefault()
+
+    this.setState({
+      //Horns is a number
+      horns: Number(e.target.value)
+    })
+  }
+
   render() {
+    //Update constructor to reflect state if nothing is selected, if keyword is selected, is horns is selected, if they are both selected
     const filterImages = images.filter((image) => {
+      //If neither are selected, display all
+      if (!this.state.keyword && !this.state.horns) return true;
 
-      if (!this.state.keyword) return true;
+      //If keyword is selected, filter and display keyword
+      if (this.state.keyword && !this.state.horns)
 
-      if (image.keyword === this.state.keyword) return true;
+        return image.keyword === this.state.keyword;
+
+      //If horns is selected, filter and display horns
+      if (this.state.horns && !this.state.keyword)
+        return image.horns === this.state.horns;
+
+      //If both are selected, filter images by both
+      if (this.state.keyword && this.state.horns)
+
+        return image.keyword === this.state.keyword && image.horns === this.state.horns;
 
       return false;
+
     })
 
     return (
       <main>
         <Header />
-        <form className='form'>
-          Choose a Horned Creature
-          <select value={this.state.title}
-            onChange={this.handleTitleChange}>
-            <option value=''></option>
-            <option value='narwhal'>Narwhal</option>
-            <option value='rhino'>Rhino</option>
-            <option value='unicorn'>Unicorn</option>
-            <option value='unilego'>Unilego</option>
-            <option value='triceratops'>Triceratops</option>
-            <option value='markhor'>Markhor</option>
-            <option value='mouflon'>Mouflon</option>
-            <option value='addax'>Addax</option>
-            <option value='lizard'>Lizard</option>
-            <option value='dragon'>Dragon</option>
-          </select>
-        </form>
-        <ul>
-          <ImageList images={filterImages} />
-        </ul>
+        {/* call dropdown component for each dropdown, include the value, handler, and options */}
+        <div className='dropdown'>
+          <section className='name'>
+            Name:
+        <Dropdown currentValue={this.state.keyword}
+              handleChange={this.handleKeywordChange}
+              options={['narwal', 'rhino', 'unicorn', 'unilego', 'triceratops', 'markhor', 'mouflon', 'addax', 'lizard', 'dragon']} />
+          </section>
+          <section className='horns'>
+            Horns:
+          <Dropdown currentValue={this.state.horns}
+              handleChange={this.handleHornsChange}
+              options={[1, 2, 3, 100]} />
+          </section>
+        </div>
+        <ImageList images={filterImages} />
       </main>
     )
   }
