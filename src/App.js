@@ -26,7 +26,7 @@ export default class App extends React.Component {
 
     this.setState({
       //Horns is a number
-      horns: e.target.value
+      horns: Number(e.target.value)
     })
   }
 
@@ -58,16 +58,21 @@ export default class App extends React.Component {
       <main>
         <Header />
         {/* call dropdown component for each dropdown, include the value, handler, and options */}
-        Name:
+        <div className='dropdown'>
+          <section className='name'>
+            Name:
         <Dropdown currentValue={this.state.keyword}
-          handleChange={this.handleKeywordChange}
-          options={['narwal', 'rhino', 'unicorn', 'unilego', 'triceratops', 'markhor', 'mouflon', 'addax', 'lizard', 'dragon']} />
-        Horns:
-        <Dropdown currentValue={this.state.horns}
-          handleChange={this.handleHornsChange}
-          options={[1, 2, 3, 100]} />
+              handleChange={this.handleKeywordChange}
+              options={['narwal', 'rhino', 'unicorn', 'unilego', 'triceratops', 'markhor', 'mouflon', 'addax', 'lizard', 'dragon']} />
+          </section>
+          <section className='horns'>
+            Horns:
+          <Dropdown currentValue={this.state.horns}
+              handleChange={this.handleHornsChange}
+              options={[1, 2, 3, 100]} />
+          </section>
+        </div>
         <ImageList images={filterImages} />
-
       </main>
     )
   }
