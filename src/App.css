@@ -52,6 +52,6 @@ li {
 }
 
 .images {
-  width: 200px;
-  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }

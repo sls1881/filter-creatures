@@ -33,12 +33,25 @@ export default class App extends React.Component {
   render() {
     //Update constructor to reflect state if nothing is selected, if keyword is selected, is horns is selected, if they are both selected
     const filterImages = images.filter((image) => {
+      //If neither are selected, display all
+      if (!this.state.keyword && !this.state.horns) return true;
 
-      if (!this.state.keyword) return true;
+      //If keyword is selected, filter and display keyword
+      if (this.state.keyword && !this.state.horns)
 
-      if (image.keyword === this.state.keyword) return true;
+        return image.keyword === this.state.keyword;
+
+      //If horns is selected, filter and display horns
+      if (this.state.horns && !this.state.keyword)
+        return image.horns === this.state.horns;
+
+      //If both are selected, filter images by both
+      if (this.state.keyword && this.state.horns)
+
+        return image.keyword === this.state.keyword && image.horns === this.state.horns;
 
       return false;
+
     })
 
     return (
@@ -47,12 +60,12 @@ export default class App extends React.Component {
         {/* call dropdown component for each dropdown, include the value, handler, and options */}
         Name:
         <Dropdown currentValue={this.state.keyword}
-          changeHandle={this.handleKeywordChange}
+          handleChange={this.handleKeywordChange}
           options={['narwal', 'rhino', 'unicorn', 'unilego', 'triceratops', 'markhor', 'mouflon', 'addax', 'lizard', 'dragon']} />
         Horns:
         <Dropdown currentValue={this.state.horns}
-          changeHandle={this.handleHornsChange}
-          options={[1, 2, 3, 4, 5]} />
+          handleChange={this.handleHornsChange}
+          options={[1, 2, 3, 100]} />
         <ImageList images={filterImages} />
 
       </main>
